@@ -2,8 +2,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 const Feed = () => {
   const user = useSelector((state: any) => state?.user);
@@ -1007,7 +1011,10 @@ const Feed = () => {
                       </div>
                     </div>
                     {posts.map((post, index) => (
-                      <div key={index} className="_feed_inner_timeline_post_area _b_radious6 _padd_b24 _padd_t24 _mar_b16">
+                      <div
+                        key={index}
+                        className="_feed_inner_timeline_post_area _b_radious6 _padd_b24 _padd_t24 _mar_b16"
+                      >
                         {/* Post content structure */}
                         <div className="_feed_inner_timeline_content _padd_r24 _padd_l24">
                           <div className="_feed_inner_timeline_post_top">
@@ -1024,7 +1031,11 @@ const Feed = () => {
                                   Karim Saif
                                 </h4>
                                 <p className="_feed_inner_timeline_post_box_para">
-                                  5 minute ago . <a href="#0">Public</a>
+                                  {post?.createdAt
+                                    ? dayjs(post.createdAt).fromNow()
+                                    : ""}
+                                  <span> . </span>
+                                  <a href="#0">{post.isPrivate ? 'Private' : 'Public'}</a>
                                 </p>
                               </div>
                             </div>
