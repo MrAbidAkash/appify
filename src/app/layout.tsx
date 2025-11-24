@@ -7,7 +7,8 @@ import "../../public/assets/css/main.css";
 import "../../public/assets/css/responsive.css";
 // import "./globals.css";
 import LoadScripts from "@/components/LoadScripts";
-
+import { Providers } from "@/components/Providers";
+import SoonerClient from "@/components/SoonerClient";
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
 //   subsets: ["latin"],
@@ -31,8 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
+        <SoonerClient />
         <LoadScripts />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

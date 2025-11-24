@@ -1,24 +1,60 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 
 "use client";
 
 import React, { useState } from "react";
+import { useLoginMutation } from "@/lib/services/userApi";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/lib/slices/userSlice";
 
 const Login = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [loginMutation] = useLoginMutation();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: true, // Set to true since it's checked by default
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" || type === "radio" ? checked : value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response: any = await loginMutation(formData);
+
+      console.log("response", response);
+
+      if (response?.error) {
+        toast.error(response?.error?.data?.message || "Login failed");
+        return;
+      }
+      toast.success(response?.data?.message || "Login successful");
+
+      // Save user info in RTK
+      dispatch(
+        setUser({
+          user: response?.data?.data,
+          token: response?.data?.token,
+        }),
+      );
+
+      localStorage.setItem("user", JSON.stringify(response?.data?.data));
+      
+
+      router.push("/feed");
+    } catch (error: any) {
+      console.log("error ttt", error);
+      toast.error(error?.data?.message || "Login failed");
+    }
+  };
   return (
     <section className="_social_login_wrapper _layout_main_wrapper">
       <div className="_shape_one">
@@ -75,7 +111,7 @@ const Login = () => {
                   Login to your account
                 </h4>
                 <button
-                  type="button"
+                  type="submit"
                   className="_social_login_content_btn _mar_b40"
                 >
                   <img
@@ -88,7 +124,7 @@ const Login = () => {
                 <div className="_social_login_content_bottom_txt _mar_b40">
                   <span>Or</span>
                 </div>
-                <form className="_social_login_form">
+                <form onSubmit={handleSubmit} className="_social_login_form">
                   <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_login_form_input _mar_b14">
@@ -127,7 +163,7 @@ const Login = () => {
                           type="radio"
                           name="rememberMe"
                           id="flexRadioDefault2"
-                          checked={formData.rememberMe}
+                          // checked={formData.rememberMe}
                           onChange={handleInputChange}
                         />
                         <label
@@ -150,7 +186,7 @@ const Login = () => {
                     <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                       <div className="_social_login_form_btn _mar_t40 _mar_b60">
                         <button
-                          type="button"
+                          type="submit"
                           className="_social_login_form_btn_link _btn1"
                         >
                           Login now

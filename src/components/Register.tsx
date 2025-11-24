@@ -4,8 +4,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useCreateUserMutation } from "@/lib/services/userApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter();
+  const [createUser] = useCreateUserMutation();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -24,21 +29,31 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     // Example basic validations
     if (!formData.firstName || !formData.email || !formData.password) {
-      alert("Please fill all required fields!");
+      toast.error("Please fill all required fields!");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
 
-    console.log("Form Submitted:", formData);
+    try {
+      const response: any = await createUser(formData).unwrap();
+      console.log("response", response);
+      if (response?.status === 200) {
+        toast.success(response?.message || "User created successfully");
+        router.push("/");
+      }
+    } catch (error: any) {
+      console.log("error", error);
+      toast.error(error?.data?.message || "User creation failed");
+    }
   };
 
   return (

@@ -1015,12 +1015,12 @@ const Feed = () => {
                             <p className="_left_iner_event_bottom">
                               17 People Going
                             </p>
-                            <a
-                              href="#0"
+                            <span
+                              // href="#0"
                               className="_left_iner_event_bottom_link"
                             >
                               Going
-                            </a>
+                            </span>
                           </div>
                         </div>
                       </a>
@@ -1052,12 +1052,12 @@ const Feed = () => {
                             <p className="_left_iner_event_bottom">
                               17 People Going
                             </p>
-                            <a
-                              href="#0"
+                            <span
+                              // href="#0"
                               className="_left_iner_event_bottom_link"
                             >
                               Going
-                            </a>
+                            </span>
                           </div>
                         </div>
                       </a>
