@@ -164,7 +164,7 @@ const Login = () => {
                     <div className="_social_login_bottom_txt">
                       <p className="_social_login_bottom_txt_para">
                         Dont have an account?{" "}
-                        <a href="/sign-up">Create New Account</a>
+                        <a href="/register">Create New Account</a>
                       </p>
                     </div>
                   </div>

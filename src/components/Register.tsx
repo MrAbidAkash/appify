@@ -1,7 +1,46 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-const SignUp = () => {
+import Link from "next/link";
+import { useState } from "react";
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agree: true,
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" || type === "radio" ? checked : value,
+    }));
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    // Example basic validations
+    if (!formData.firstName || !formData.email || !formData.password) {
+      alert("Please fill all required fields!");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    console.log("Form Submitted:", formData);
+  };
+
   return (
     <section className="_social_registration_wrapper _layout_main_wrapper">
       <div className="_shape_one">
@@ -34,7 +73,7 @@ const SignUp = () => {
       <div className="_social_registration_wrap">
         <div className="container">
           <div className="row align-items-center">
-            {/* LEFT SIDE IMAGES */}
+            {/* LEFT IMAGES */}
             <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12">
               <div className="_social_registration_right">
                 <div className="_social_registration_right_image">
@@ -46,7 +85,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* RIGHT SIDE FORM */}
+            {/* RIGHT FORM */}
             <div className="col-xl-4 col-lg-4 col-md-12 col-sm-12">
               <div className="_social_registration_content">
                 <div className="_social_registration_right_logo _mar_b28">
@@ -82,8 +121,42 @@ const SignUp = () => {
                 </div>
 
                 {/* FORM */}
-                <form className="_social_registration_form">
+                <form
+                  onSubmit={handleSubmit}
+                  className="_social_registration_form"
+                >
                   <div className="row">
+                    <div className="col-12">
+                      <div className="_social_registration_form_input _mar_b14">
+                        <label className="_social_registration_label _mar_b8">
+                          First Name
+                        </label>
+                        <input
+                          type="text"
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleInputChange}
+                          className="form-control _social_registration_input"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-12">
+                      <div className="_social_registration_form_input _mar_b14">
+                        <label className="_social_registration_label _mar_b8">
+                          Last Name
+                        </label>
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleInputChange}
+                          className="form-control _social_registration_input"
+                        />
+                      </div>
+                    </div>
+
                     <div className="col-12">
                       <div className="_social_registration_form_input _mar_b14">
                         <label className="_social_registration_label _mar_b8">
@@ -91,7 +164,11 @@ const SignUp = () => {
                         </label>
                         <input
                           type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
                           className="form-control _social_registration_input"
+                          required
                         />
                       </div>
                     </div>
@@ -103,7 +180,11 @@ const SignUp = () => {
                         </label>
                         <input
                           type="password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleInputChange}
                           className="form-control _social_registration_input"
+                          required
                         />
                       </div>
                     </div>
@@ -115,7 +196,11 @@ const SignUp = () => {
                         </label>
                         <input
                           type="password"
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleInputChange}
                           className="form-control _social_registration_input"
+                          required
                         />
                       </div>
                     </div>
@@ -128,8 +213,8 @@ const SignUp = () => {
                           className="form-check-input _social_registration_form_check_input"
                           type="radio"
                           name="agree"
-                          id="agree"
-                          defaultChecked
+                          checked={formData.agree}
+                          onChange={handleInputChange}
                         />
                         <label
                           className="form-check-label _social_registration_form_check_label"
@@ -145,10 +230,10 @@ const SignUp = () => {
                     <div className="col-12">
                       <div className="_social_registration_form_btn _mar_t40 _mar_b60">
                         <button
-                          type="button"
-                          className="_social_registration_form_btn_link _btn1"
+                          type="submit"
+                          className="_social_registration_form_btn_link _reg_btn1"
                         >
-                          Login now
+                          Register now
                         </button>
                       </div>
                     </div>
@@ -159,14 +244,14 @@ const SignUp = () => {
                   <div className="col-12">
                     <div className="_social_registration_bottom_txt">
                       <p className="_social_registration_bottom_txt_para">
-                        Dont have an account?{" "}
-                        <a href="#0">Create New Account</a>
+                        Already have an account? <Link href="/">Login</Link>
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            {/* END FORM */}
           </div>
         </div>
       </div>
@@ -174,4 +259,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

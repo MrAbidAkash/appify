@@ -240,6 +240,15 @@ ul {
   font-size: 16px;
   color: #fff;
 }
+._reg_btn1 {
+  padding: 12px 107px;
+  background: var(--color5);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #fff;
+}
 
 ._btn1:hover {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
