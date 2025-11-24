@@ -22,7 +22,7 @@ export function proxy(req: NextRequest) {
       jwt.verify(token, process.env.JWT_SECRET || "secret");
       return NextResponse.next();
     } catch (err) {
-      console.log("Invalid token:", err);
+      // console.log("Invalid token:", err);
       return NextResponse.redirect(new URL("/", req.url));
     }
   }

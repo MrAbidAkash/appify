@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     }
 
     // remove sensitive fields
-    const { password, ...userData } = user;
+    const { password, createdAt, updatedAt, ...userData } = user;
 
     // create JWT
     const token = jwt.sign(
