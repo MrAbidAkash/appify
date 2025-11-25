@@ -7,8 +7,9 @@ import { cookies } from "next/headers";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  // params is now a Promise
   try {
     await connectToDatabase();
 
@@ -35,8 +36,10 @@ export async function POST(
     console.log("userId,", userId);
     console.log("reaction,", reaction);
 
-    const { id: commentId } = params;
+    // Await the params Promise to get the actual params object
+    const { id: commentId } = await params;
     console.log("commentId,", commentId);
+
     const comment = await Comment.findById(commentId);
     if (!comment) {
       return NextResponse.json({ error: "Comment not found" }, { status: 404 });

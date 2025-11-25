@@ -21,7 +21,7 @@ const Feed = () => {
 
   const [isNotifyDropShow, setIsNotifyDropShow] = useState(false);
   const [isProfileDropShow, setIsProfileDropShow] = useState(false);
-  const [isTimelineDropShow, setIsTimelineDropShow] = useState(false);
+  // const [isTimelineDropShow, setIsTimelineDropShow] = useState(false);
 
   const [isClicked, setIsClicked] = useState(false);
   const [isClickedForComment, setIsClickedForComment] = useState(false);
@@ -100,9 +100,9 @@ const Feed = () => {
     setIsProfileDropShow(!isProfileDropShow);
   };
 
-  const toggleTimelineDropdown = () => {
-    setIsTimelineDropShow(!isTimelineDropShow);
-  };
+  // const toggleTimelineDropdown = () => {
+  //   setIsTimelineDropShow(!isTimelineDropShow);
+  // };
 
   return (
     <div className="_layout _layout_main_wrapper">

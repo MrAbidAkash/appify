@@ -5,8 +5,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  // Change this line
   try {
     await connectToDatabase();
 
@@ -15,7 +16,7 @@ export async function POST(
     console.log("userId,", userId);
     console.log("reaction,", reaction);
 
-    const { id: postId } = await params;
+    const { id: postId } = await params; // Already fixed here, but params signature was wrong
     console.log("postId,", postId);
     const post = await Post.findById(postId);
     if (!post) {
