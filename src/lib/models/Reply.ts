@@ -1,25 +1,35 @@
 // src/lib/models/Reply.ts
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import Comment from "./Comment";
 
-export interface IReply extends Document {
-  comment: Types.ObjectId;
-  author: Types.ObjectId;
-  content: string;
-  likes: Types.ObjectId[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const ReplySchema: Schema<IReply> = new Schema(
+const ReplySchema: Schema = new Schema(
   {
     comment: { type: Schema.Types.ObjectId, ref: "Comment", required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     content: { type: String, required: true },
-    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    // likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    reactions: [
+      {
+        userId: { type: Schema.Types.ObjectId, ref: "User" },
+        type: {
+          type: String,
+          enum: ["like", "love", "haha", "wow", "sad", "angry"],
+        },
+      },
+    ],
   },
   { timestamps: true },
 );
 
-const Reply: Model<IReply> =
-  mongoose.models.Reply || mongoose.model("Reply", ReplySchema);
+ReplySchema.post("save", async function (doc) {
+  try {
+    await Comment.findByIdAndUpdate(doc.comment, {
+      $push: { replies: doc._id },
+    });
+  } catch (err) {
+    console.error("Error adding reply ref to comment:", err);
+  }
+});
+
+const Reply = mongoose.models.Reply || mongoose.model("Reply", ReplySchema);
 export default Reply;

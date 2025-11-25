@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       httpOnly: true, // not accessible via JS
       secure: process.env.NODE_ENV === "production", // only HTTPS in prod
       sameSite: "strict", // CSRF protection
-      maxAge: 60 * 60, // 1 hour
+      maxAge: 60 * 60 * 24 * 7, // 1 week
       path: "/", // cookie available to all paths
     });
 

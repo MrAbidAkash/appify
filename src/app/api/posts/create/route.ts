@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
     // get body
     const body = await request.json();
-    const { title, image } = body;
+    const { title, image, visibility } = body;
 
     let imagePath = "";
     if (image) {
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     }
 
     // create post with author
-    const post = await Post.create({ title, image: imagePath, author: userId });
+    const post = await Post.create({ title, image: imagePath, author: userId, visibility });
 
     return NextResponse.json({ post, status: 201 }, { status: 201 });
   } catch (error) {
