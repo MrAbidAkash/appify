@@ -35,7 +35,7 @@ export async function POST(
     console.log("userId,", userId);
     console.log("reaction,", reaction);
 
-    const { id: commentId } = await params;
+    const { id: commentId } = params;
     console.log("commentId,", commentId);
     const comment = await Comment.findById(commentId);
     if (!comment) {
